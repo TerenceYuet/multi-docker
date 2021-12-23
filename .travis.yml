@@ -14,12 +14,8 @@ after_success:
   - docker build -t s061144/multi-server ./server
   - docker build -t s061144/multi-worker ./worker
   # Log in to the docker CLI
-  - ehco "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD" docker.io
   # Take those images and push them to docker hub
-  - docker tag multi-client s061144/multi-client
-  - docker tag multi-nginx s061144/multi-nginx
-  - docker tag multi-server s061144/multi-server
-  - docker tag multi-worker s061144/multi-worker
   - docker push s061144/multi-client
   - docker push s061144/multi-nginx
   - docker push s061144/multi-server
