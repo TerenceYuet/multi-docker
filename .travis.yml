@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t s061144/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run s061144/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t s061144/multi-client ./client
+  - docker build -t s061144/multi-nginx ./nginx
+  - docker build -t s061144/multi-server ./server
+  - docker build -t s061144/multi-worker ./worker
+  # Log in to the docker CLI
+  - ehco "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push s061144/multi-client
+  - docker push s061144/multi-nginx
+  - docker push s061144/multi-server
+  - docker push s061144/multi-worker
