@@ -1,8 +1,10 @@
 sudo: required
 services:
   - docker
+  - coreutils
 
 before_install:
+  - sudo apt-get -y install coreutils
   - docker build -t s061144/react-test -f ./client/Dockerfile.dev ./client
 
 script:
